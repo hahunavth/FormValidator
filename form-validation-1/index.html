@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="./style.css">
+</head>
+<body>
+    <form action="" class="form-signup">
+        <div class="form-title">Thành viên đăng ký</div>
+        <div class="form-subtitle">Đăng ký</div>
+        <div class="input-container">
+            <label for="" class="form-label">Tên đầy đủ</label>
+            <input type="text" name="fullname" class="form-input full-name" placeholder="VD: John Smith">
+            <span class="form-message"></span>
+        </div> 
+        <div class="input-container">
+            <label for="" class="form-label">Email</label>
+            <input type="text" name="email" class="form-input email" placeholder="VD: ha.vt194547@sis.hust.edu.vn">
+            <span class="form-message"></span>
+        </div> 
+        <div class="input-container ">
+            <label for="" class="form-label">Mật khẩu</label>
+            <input type="password" name="password" class="form-input password" placeholder="Nhập mật khẩu">
+            <span class="form-message"></span>
+        </div> 
+        <div class="input-container">
+            <label for="" class="form-label">Nhập lại mật khẩu</label>
+            <input type="password" class="form-input password-confirmation" placeholder="Nhập lại mật khẩu">
+            <span class="form-message"></span>
+        </div>
+            <input class="signup-btn" type="submit" value="Đăng ký">
+    </form>
+    <script src="validator.js"></script>
+    <script>
+        Validator({
+            form: '.form-signup',
+            errorSelector: '.form-message',
+            rules: [
+                Validator.isRequired('.full-name'),
+                Validator.isRequired('.email'),
+                Validator.isEmail('.email'),
+                Validator.minLength('.password', 6),
+                Validator.minLength('.password-confirmation', 6),
+                Validator.isConfirm('.password-confirmation', function () {
+                    return document.querySelector('.form-signup .password').value;
+                }, 'Mật khẩu nhập lại không chính xác')
+            ], 
+            onSubmit: function (data) {
+                console.log(data);
+            }
+        })
+    </script>
+</body>
+</html>
