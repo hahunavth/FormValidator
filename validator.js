@@ -1,13 +1,31 @@
+//---------------------------------------------------
+//Handle Validator
+/*Usage:
+ * Validator(
+ *    form: 'form-selector',
+ *    errorSelector: '.form-message',
+ *    rules: [
+ *      Validator.type(selector)
+ *    ],
+ *    onSubmit: function (data) {
+ *      handleSubmit(data)
+ *    }
+ *})
+ */
+//---------------------------------------------------
 function Validator(option) {
+  //select form element
   var formElement = document.querySelector(option.form);
   var selectorRules = {};
 
   if (formElement) {
+    //handle submit -> formElement
     formElement.onsubmit = function (e) {
       e.preventDefault();
 
       var isValid = true;
 
+      //selector rules
       option.rules.forEach(function (rule) {
         if (Array.isArray(selectorRules[rule.selector])) {
           selectorRules[rule.selector].push(rule.test);
@@ -59,6 +77,7 @@ function Validator(option) {
       }
     };
 
+    //handle input element blur
     option.rules.forEach(function (rule) {
       if (Array.isArray(selectorRules[rule.selector])) {
         selectorRules[rule.selector].push(rule.test);
@@ -97,6 +116,18 @@ function Validator(option) {
   }
 }
 
+//---------------------------------------------------
+/*
+ *Validate.type = function
+ *[params]:
+ *   - selector: querySelector. Ex: div, .class, #id.
+ *[return]:
+ *   {
+ *     selector: string,
+ *     test: (value) => return message
+ *   }
+ */
+//---------------------------------------------------
 Validator.isRequired = function (selector) {
   return {
     selector: selector,
@@ -112,7 +143,8 @@ Validator.isEmail = function (selector) {
     test: function (value) {
       var email = value.trim();
       function validateEmail(email) {
-        const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        const re =
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(String(email).toLowerCase());
       }
       return validateEmail(email) ? undefined : "Trường này phải là email";
